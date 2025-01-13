@@ -17,157 +17,162 @@ const multipleGoodAnswers = [a2.id, a3.id]
 
 describe('question tests', () => {
 
-    describe('single good answer policy tests', () => {
+  describe('single good answer policy tests', () => {
 
-        it('should had required property', async () => {
+    it('should had required property', async () => {
 
-            const questionData: QuestionData = {
-                label,
-                answers,
-                goodAnswers: singleGoodAnswer
-            }
-            const question = new Question(questionData)
+      const questionData: QuestionData = {
+        label,
+        answers,
+        goodAnswers: singleGoodAnswer
+      }
+      const question = new Question(questionData)
 
-            expect('label' in question).toBeTruthy()
-            expect('answers' in question).toBeTruthy()
-            expect('goodAnswers' in question).toBeTruthy()
-        });
+      expect('label' in question).toBeTruthy()
+      expect(question.label).to.not.toBeFalsy()
+      expect('answers' in question).toBeTruthy()
+      expect(question.answers).to.not.toBeFalsy()
+      expect('goodAnswers' in question).toBeTruthy()
+      expect(question.goodAnswers).to.not.toBeFalsy()
+      expect('id' in question).toBeTruthy()
+      expect(question.id).to.not.toBeFalsy()
+    });
 
-        it('should contain at least two answer', async () => {
+    it('should contain at least two answer', async () => {
 
-            const singleAnswerQuestion: QuestionData = {
-                label,
-                answers: [a1],
-                goodAnswers: singleGoodAnswer
-            }
+      const singleAnswerQuestion: QuestionData = {
+        label,
+        answers: [a1],
+        goodAnswers: singleGoodAnswer
+      }
 
-            const multipleAnswerQuestion: QuestionData = {
-                label,
-                answers: [a1, a2],
-                goodAnswers: singleGoodAnswer
-            }
+      const multipleAnswerQuestion: QuestionData = {
+        label,
+        answers: [a1, a2],
+        goodAnswers: singleGoodAnswer
+      }
 
-            expect(() => new Question(singleAnswerQuestion)).toThrowError(/number of answers are lower than/i)
-            expect(() => new Question(multipleAnswerQuestion)).not.toThrowError()
+      expect(() => new Question(singleAnswerQuestion)).toThrowError(/number of answers are lower than/i)
+      expect(() => new Question(multipleAnswerQuestion)).not.toThrowError()
 
-        });
+    });
 
-        it('should throw a error when no single good answers provided', () => {
+    it('should throw a error when no single good answers provided', () => {
 
-            const singleAnswerQuestion: QuestionData = {
-                label,
-                answers: [a1, a2],
-                goodAnswers: []
-            }
+      const singleAnswerQuestion: QuestionData = {
+        label,
+        answers: [a1, a2],
+        goodAnswers: []
+      }
 
-            expect(() => new Question(singleAnswerQuestion)).toThrowError(/no good answers provided/i)
+      expect(() => new Question(singleAnswerQuestion)).toThrowError(/no good answers provided/i)
 
-        });
+    });
 
-        it('should contain at least one good answer ', () => {
+    it('should contain at least one good answer ', () => {
 
-            const singleAnswerQuestion: QuestionData = {
-                label,
-                answers: [a1, a2],
-                goodAnswers: [a1.id]
-            }
-            expect(() => new Question(singleAnswerQuestion)).to.not.toThrowError()
-            const q = new Question(singleAnswerQuestion)
-            expect(q.goodAnswers).toBeTruthy()
-        });
+      const singleAnswerQuestion: QuestionData = {
+        label,
+        answers: [a1, a2],
+        goodAnswers: [a1.id]
+      }
+      expect(() => new Question(singleAnswerQuestion)).to.not.toThrowError()
+      const q = new Question(singleAnswerQuestion)
+      expect(q.goodAnswers).toBeTruthy()
+    });
 
-        it('should thow error when not at least one good answer among answers passed', () => {
+    it('should thow error when not at least one good answer among answers passed', () => {
 
-            const singleAnswerQuestion: QuestionData = {
-                label,
-                answers: [a1, a2],
-                goodAnswers: [a3.id]
-            }
-            expect(() => new Question(singleAnswerQuestion)).toThrowError(/answer id not match any of answers provided/i)
-        });
+      const singleAnswerQuestion: QuestionData = {
+        label,
+        answers: [a1, a2],
+        goodAnswers: [a3.id]
+      }
+      expect(() => new Question(singleAnswerQuestion)).toThrowError(/answer id not match any of answers provided/i)
+    });
 
-        it('should contain at least one good answer among answers passed', () => {
+    it('should contain at least one good answer among answers passed', () => {
 
-            const singleAnswerQuestion: QuestionData = {
-                label,
-                answers: [a1, a2],
-                goodAnswers: [a1.id]
-            }
-            expect(() => new Question(singleAnswerQuestion)).to.not.toThrowError()
-        });
-
-
-        it('should contain an label', async () => {
-
-            const singleAnswerQuestion: QuestionData = {
-                label,
-                answers: [a1, a2],
-                goodAnswers: [a1.id]
-            }
-
-            const q = new Question(singleAnswerQuestion)
-
-            expect(q).toHaveProperty('label')
-            expect(q.label).toMatch(/first sample question/i)
-        });
+      const singleAnswerQuestion: QuestionData = {
+        label,
+        answers: [a1, a2],
+        goodAnswers: [a1.id]
+      }
+      expect(() => new Question(singleAnswerQuestion)).to.not.toThrowError()
+    });
 
 
-        it('should contain at least two answer different from each other based based on text', async () => {
+    it('should contain an label', async () => {
 
-            const singleAnswerQuestion: QuestionData = {
-                label,
-                answers: [a1, a1],
-                goodAnswers: [a1.id]
-            }
+      const singleAnswerQuestion: QuestionData = {
+        label,
+        answers: [a1, a2],
+        goodAnswers: [a1.id]
+      }
 
-            expect(() => new Question(singleAnswerQuestion)).toThrowError(/There must be at least two different answers/i)
-        });
+      const q = new Question(singleAnswerQuestion)
 
-        it('should throw error when answers max number exceeded', async () => {
-            const singleAnswerQuestion: QuestionData = {
-                label,
-                answers: [a1, a2, a3, a4],
-                goodAnswers: [a1.id]
-            }
-
-            const questionConfig: QuestionConfig = {
-                maxNumberOfAnswers: 3
-            }
-
-            expect(() => new Question(singleAnswerQuestion, questionConfig)).toThrowError(/max 3 answers allowed/i)
-        });
+      expect(q).toHaveProperty('label')
+      expect(q.label).toMatch(/first sample question/i)
+    });
 
 
-        it('should throw error when min config number are higher than low', async () => {
+    it('should contain at least two answer different from each other based based on text', async () => {
 
-            const singleAnswerQuestion: QuestionData = {
-                label,
-                answers: [a1, a2, a3, a4],
-                goodAnswers: [a1.id]
-            }
+      const singleAnswerQuestion: QuestionData = {
+        label,
+        answers: [a1, a1],
+        goodAnswers: [a1.id]
+      }
 
-            const questionConfig: QuestionConfig = {
-                minNumberOfAnswers: 4,
-                maxNumberOfAnswers: 3
-            }
+      expect(() => new Question(singleAnswerQuestion)).toThrowError(/There must be at least two different answers/i)
+    });
 
-            expect(() => new Question(singleAnswerQuestion, questionConfig)).toThrowError(/Min number of answers are higher then max one/i)
-        });
+    it('should throw error when answers max number exceeded', async () => {
+      const singleAnswerQuestion: QuestionData = {
+        label,
+        answers: [a1, a2, a3, a4],
+        goodAnswers: [a1.id]
+      }
 
-        it('should contain a explanation when are provided', async () => {
+      const questionConfig: QuestionConfig = {
+        maxNumberOfAnswers: 3
+      }
 
-            const singleAnswerQuestion: QuestionData = {
-                label,
-                answers: [a1, a2, a3, a4],
-                goodAnswers: [a1.id],
-                explanation: "some simple explanation"
-            }
+      expect(() => new Question(singleAnswerQuestion, questionConfig)).toThrowError(/max 3 answers allowed/i)
+    });
 
-            const q = new Question(singleAnswerQuestion)
 
-            expect(q.explanation).toBeTruthy()
+    it('should throw error when min config number are higher than low', async () => {
 
-        });
-    })
+      const singleAnswerQuestion: QuestionData = {
+        label,
+        answers: [a1, a2, a3, a4],
+        goodAnswers: [a1.id]
+      }
+
+      const questionConfig: QuestionConfig = {
+        minNumberOfAnswers: 4,
+        maxNumberOfAnswers: 3
+      }
+
+      expect(() => new Question(singleAnswerQuestion, questionConfig)).toThrowError(/Min number of answers are higher then max one/i)
+    });
+
+    it('should contain a explanation when are provided', async () => {
+
+      const singleAnswerQuestion: QuestionData = {
+        label,
+        answers: [a1, a2, a3, a4],
+        goodAnswers: [a1.id],
+        explanation: "some simple explanation"
+      }
+
+      const q = new Question(singleAnswerQuestion)
+
+      expect(q.explanation).toBeTruthy()
+
+    });
+  })
 
 })
