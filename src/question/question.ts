@@ -1,5 +1,6 @@
 import { Answer } from "../answer/answer";
-import { QuestionValidationPolicy, SingleAnswerPolicy } from "./questionValidationPolicy";
+import { assert } from "../utils/assert";
+import { QuestionValidationPolicy, SingleGoodAnswerPolicy, ValidationParams } from "./questionValidationPolicy";
 
 export interface QuestionData {
     label: string,
@@ -9,7 +10,9 @@ export interface QuestionData {
 }
 
 export interface QuestionConfig {
-    validation: QuestionValidationPolicy
+    validation?: QuestionValidationPolicy
+    minNumberOfAnswers?: number
+    maxNumberOfAnswers?: number
 }
 
 export class Question {
@@ -19,21 +22,33 @@ export class Question {
     public goodAnswers: Answer['id'][]
     public explanation?: string
 
-    /**
-     *
-     * @private
-     * @type {QuestionValidationPolicy}
-     * @memberof Question
-     */
-    public validation: QuestionValidationPolicy
+    private validation: QuestionValidationPolicy
+
+    private defaultConfiig: QuestionConfig = {
+        validation: new SingleGoodAnswerPolicy(),
+        minNumberOfAnswers: 2,
+        maxNumberOfAnswers: 4,
+    }
 
     public constructor(params: QuestionData, config?: QuestionConfig) {
 
-        this.validation = config?.validation || new SingleAnswerPolicy()
+        assert(this.defaultConfiig.validation)
+        assert(this.defaultConfiig.minNumberOfAnswers)
+        assert(this.defaultConfiig.maxNumberOfAnswers)
+
+        this.validation = config?.validation || this.defaultConfiig?.validation
 
         const { label, answers, goodAnswers, explanation } = params
 
-        const { error, message } = this.validation.validate(answers, goodAnswers)
+        const validationParams: ValidationParams = {
+            answers,
+            goodAnswers,
+            max: config?.maxNumberOfAnswers || this.defaultConfiig.maxNumberOfAnswers,
+            min: config?.minNumberOfAnswers || this.defaultConfiig.minNumberOfAnswers,
+        }
+
+        const { error, message } = this.validation.validate(validationParams)
+
         if (error) {
             throw new Error(message)
         }
@@ -42,9 +57,6 @@ export class Question {
         this.answers = answers
         this.goodAnswers = goodAnswers
         this.explanation = explanation
-
-
     }
 
-    public validateQuiz() { }
 }
