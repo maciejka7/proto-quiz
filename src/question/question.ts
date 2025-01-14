@@ -1,10 +1,9 @@
 import { Answer } from "../answer/answer";
 import { assert } from "../utils/assert";
-import { UUID } from "../utils/utilsTypes";
-import { uuid } from "../utils/uuid";
+import { UUID, uuid } from "../utils/uuid";
 import { QuestionValidationPolicy, SingleGoodAnswerPolicy, ValidationParams } from "./questionValidationPolicy";
 
-export interface QuestionData {
+export interface QuestionParam {
   label: string,
   answers: Answer[],
   goodAnswers: Answer['id'][],
@@ -33,7 +32,7 @@ export class Question {
     maxNumberOfAnswers: 4,
   }
 
-  public constructor(params: QuestionData, config?: QuestionConfig) {
+  public constructor(params: QuestionParam, config?: QuestionConfig) {
 
     assert(this.defaultConfiig.validation)
     assert(this.defaultConfiig.minNumberOfAnswers)

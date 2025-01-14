@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { Answer, AnswerData } from './answer'
+import { Answer, AnswerParam } from './answer'
 import { answerMocks } from './answerMock';
 
 describe('answer VO tests', () => {
@@ -16,8 +16,8 @@ describe('answer VO tests', () => {
 
     it('should answer can be equals based on text', async () => {
 
-        const answerOneData: AnswerData = answerMocks[1]       
-        const answerTwoData: AnswerData = answerMocks[2]
+        const answerOneData: AnswerParam = answerMocks[1]
+        const answerTwoData: AnswerParam = answerMocks[2]
 
         const answerOne = new Answer(answerOneData)
         const answerTwo = new Answer(answerOneData)

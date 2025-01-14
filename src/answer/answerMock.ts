@@ -1,6 +1,6 @@
-import { AnswerData } from "./answer";
+import { AnswerParam } from "./answer";
 
-export const answerMocks: AnswerData[] = [
+export const answerMocks: AnswerParam[] = [
     {
         text: 'simple answer one',
         description: 'lorem ipsum dolor mit'

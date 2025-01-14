@@ -1,9 +1,8 @@
 
 import { describe, expect, it } from "vitest";
-import { Question, QuestionConfig, QuestionData } from "./question";
+import { Question, QuestionConfig, QuestionParam } from "./question";
 import { Answer } from "../answer/answer";
 import { answerMocks } from "../answer/answerMock";
-import { MultipleGoodAnswerPolicy, SingleGoodAnswerPolicy } from "./questionValidationPolicy";
 
 const a1 = new Answer(answerMocks[0])
 const a2 = new Answer(answerMocks[1])
@@ -13,7 +12,6 @@ const a4 = new Answer(answerMocks[3])
 const label = 'first sample question'
 const answers = [a1, a2, a3]
 const singleGoodAnswer = [a2.id]
-const multipleGoodAnswers = [a2.id, a3.id]
 
 describe('question tests', () => {
 
@@ -21,7 +19,7 @@ describe('question tests', () => {
 
     it('should had required property', async () => {
 
-      const questionData: QuestionData = {
+      const questionData: QuestionParam = {
         label,
         answers,
         goodAnswers: singleGoodAnswer
@@ -40,13 +38,13 @@ describe('question tests', () => {
 
     it('should contain at least two answer', async () => {
 
-      const singleAnswerQuestion: QuestionData = {
+      const singleAnswerQuestion: QuestionParam = {
         label,
         answers: [a1],
         goodAnswers: singleGoodAnswer
       }
 
-      const multipleAnswerQuestion: QuestionData = {
+      const multipleAnswerQuestion: QuestionParam = {
         label,
         answers: [a1, a2],
         goodAnswers: singleGoodAnswer
@@ -59,7 +57,7 @@ describe('question tests', () => {
 
     it('should throw a error when no single good answers provided', () => {
 
-      const singleAnswerQuestion: QuestionData = {
+      const singleAnswerQuestion: QuestionParam = {
         label,
         answers: [a1, a2],
         goodAnswers: []
@@ -71,7 +69,7 @@ describe('question tests', () => {
 
     it('should contain at least one good answer ', () => {
 
-      const singleAnswerQuestion: QuestionData = {
+      const singleAnswerQuestion: QuestionParam = {
         label,
         answers: [a1, a2],
         goodAnswers: [a1.id]
@@ -83,7 +81,7 @@ describe('question tests', () => {
 
     it('should thow error when not at least one good answer among answers passed', () => {
 
-      const singleAnswerQuestion: QuestionData = {
+      const singleAnswerQuestion: QuestionParam = {
         label,
         answers: [a1, a2],
         goodAnswers: [a3.id]
@@ -93,7 +91,7 @@ describe('question tests', () => {
 
     it('should contain at least one good answer among answers passed', () => {
 
-      const singleAnswerQuestion: QuestionData = {
+      const singleAnswerQuestion: QuestionParam = {
         label,
         answers: [a1, a2],
         goodAnswers: [a1.id]
@@ -104,7 +102,7 @@ describe('question tests', () => {
 
     it('should contain an label', async () => {
 
-      const singleAnswerQuestion: QuestionData = {
+      const singleAnswerQuestion: QuestionParam = {
         label,
         answers: [a1, a2],
         goodAnswers: [a1.id]
@@ -119,7 +117,7 @@ describe('question tests', () => {
 
     it('should contain at least two answer different from each other based based on text', async () => {
 
-      const singleAnswerQuestion: QuestionData = {
+      const singleAnswerQuestion: QuestionParam = {
         label,
         answers: [a1, a1],
         goodAnswers: [a1.id]
@@ -129,7 +127,7 @@ describe('question tests', () => {
     });
 
     it('should throw error when answers max number exceeded', async () => {
-      const singleAnswerQuestion: QuestionData = {
+      const singleAnswerQuestion: QuestionParam = {
         label,
         answers: [a1, a2, a3, a4],
         goodAnswers: [a1.id]
@@ -145,7 +143,7 @@ describe('question tests', () => {
 
     it('should throw error when min config number are higher than low', async () => {
 
-      const singleAnswerQuestion: QuestionData = {
+      const singleAnswerQuestion: QuestionParam = {
         label,
         answers: [a1, a2, a3, a4],
         goodAnswers: [a1.id]
@@ -161,7 +159,7 @@ describe('question tests', () => {
 
     it('should contain a explanation when are provided', async () => {
 
-      const singleAnswerQuestion: QuestionData = {
+      const singleAnswerQuestion: QuestionParam = {
         label,
         answers: [a1, a2, a3, a4],
         goodAnswers: [a1.id],

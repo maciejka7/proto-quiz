@@ -1,19 +1,19 @@
 import { UUID, uuid } from "../utils/uuid"
 
-export interface AnswerData {
+export interface AnswerParam {
   text: string,
-  description: string
+  description?: string
 }
 
 export class Answer {
 
   public id: UUID
   public text: string
-  public description: string
+  public description: string | undefined
 
-  constructor({ text, description }: AnswerData) {
-    this.text = text,
-      this.description = description
+  constructor({ text, description }: AnswerParam) {
+    this.text = text
+    this.description = description
     this.id = uuid()
   }
 

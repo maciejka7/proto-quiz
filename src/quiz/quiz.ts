@@ -1,10 +1,8 @@
 import { Question } from "../question/question";
-import { UUID } from "../utils/uuid";
+import { uuid, UUID } from "../utils/uuid";
 
 
-export interface QuizData {
-
-  id: UUID
+export interface QuizParam {
   title: string
   description: string
   questions: Question[]
@@ -17,7 +15,14 @@ export class Quiz {
   public description: string
   public questions: Question[]
 
-  constructor({ id, title, description, questions }: QuizData) { }
+  constructor({ title, description, questions }: QuizParam) {
+
+    this.id = uuid()
+    this.title = title
+    this.description = description
+    this.questions = questions
+
+  }
 
 
 
