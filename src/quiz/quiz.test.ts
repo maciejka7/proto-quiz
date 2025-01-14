@@ -5,7 +5,7 @@ import { questionMock } from "../question/questionMock";
 const quizParam: QuizParam = {
   description: 'Simple JavaScript Quiz',
   title: "JS Quiz",
-  questions: questionMock
+  questions: questionMock,
 
 }
 
@@ -31,6 +31,27 @@ describe('quiz test', async () => {
     expect('questions' in quiz).toBeTruthy()
     expect(quiz.questions).to.not.toBeFalsy()
   })
+
+  it("should had at least one question", async () => {
+
+    const quizParam: QuizParam = {
+      description: 'Simple JavaScript Quiz',
+      title: "JS Quiz",
+      questions: [],
+    }
+
+    expect(() => new Quiz(quizParam)).toThrowError(/at least 1 questions required/i)
+
+  })
+  it.todo("should", async () => { })
+  it.todo("should", async () => { })
+  it.todo("should", async () => { })
+  it.todo("should", async () => { })
+  it.todo("should", async () => { })
+  it.todo("should", async () => { })
+  it.todo("should", async () => { })
+  it.todo("should", async () => { })
+
 
 
 })

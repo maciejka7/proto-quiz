@@ -1,7 +1,7 @@
 import { Answer } from "../answer/answer";
 import { assert } from "../utils/assert";
 import { UUID, uuid } from "../utils/uuid";
-import { QuestionValidationPolicy, SingleGoodAnswerPolicy, ValidationParams } from "./questionValidationPolicy";
+import { QuestionValidationPolicy, SingleGoodAnswerPolicy, QuestionValidationParams } from "./questionValidationPolicy";
 
 export interface QuestionParam {
   label: string,
@@ -42,7 +42,7 @@ export class Question {
 
     const { label, answers, goodAnswers, explanation } = params
 
-    const validationParams: ValidationParams = {
+    const validationParams: QuestionValidationParams = {
       answers,
       goodAnswers,
       max: config?.maxNumberOfAnswers || this.defaultConfiig.maxNumberOfAnswers,
